@@ -45,19 +45,18 @@ exports.createContact = (req, res) => {
    if(isError){
        Contact.find()
          .then((contacts) => {
-           res.render("index", { contacts, error });
+          return res.render("index", { contacts, error });
          })
          .catch((e) => {
            console.log(e);
-           res.json({
+          return res.json({
              message: "Error",
            });
          });
         
    }
 
-   console.log(error,isError);
-   return
+   
    
   let contact = new Contact({
     name,
@@ -67,11 +66,16 @@ exports.createContact = (req, res) => {
   contact
     .save()
     .then((c) => {
-      res.json(c);
+       
+      Contact.find()
+      .then(contacts=>{
+     return  res.render('index',{contacts,error:{}})
+      })
+
     })
     .catch((e) => {
       console.log(e);
-      res.json({
+    return  res.json({
         message: "Error",
       });
     });
