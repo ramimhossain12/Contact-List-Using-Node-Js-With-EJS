@@ -4,7 +4,7 @@ exports.getAllContact = (req, res) => {
   Contact.find()
     .then((contacts) => {
        
-       res.render('index',{contacts})
+       res.render('index',{contacts,error:{}})
     })
     .catch((e) => {
       console.log(e);
@@ -29,8 +29,36 @@ exports.getSingleContact = (req, res) => {
 };
 
 exports.createContact = (req, res) => {
-  let { name, phone, email } = req.body;
+  let { name, phone, email, id} = req.body
+   let error = {}
+   if(!name){
+     error.name = 'Please Enter Your Name'
+   }
+   if(!phone){
+     error.phone = "Please Enter Your Phone Number";
+   }
+   if(!email){
+     error.email = "Please Enter Your Email";
+   }
 
+   let isError = Object.keys(error).length > 0
+   if(isError){
+       Contact.find()
+         .then((contacts) => {
+           res.render("index", { contacts, error });
+         })
+         .catch((e) => {
+           console.log(e);
+           res.json({
+             message: "Error",
+           });
+         });
+        
+   }
+
+   console.log(error,isError);
+   return
+   
   let contact = new Contact({
     name,
     email,
