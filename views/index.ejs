@@ -19,7 +19,7 @@
     <div class="container  bg-dark text-white">
       <div class="my-4 ">
         <h4  class="te text-center">Create New Contacts</h4>
-        <form action="/contacts"method="POST">   
+        <form action="/contacts"method="POST" id="my-form">   
         
          <!-- class="form-inline"  -->
 
@@ -27,13 +27,13 @@
           <input type="text" name="name" placeholder="Name" class="form-control <%= error.name ? 'is-invalid': '' %> " />
           <div class="invalid-feedback">
             <%= error.name %> 
-          </div>
+        </div>
         
         <div class="form-group" mr-3>
           <input type="text" name="phone" placeholder="Phone" class="form-control <%= error.phone ? 'is-invalid': '' %>" />
             <div class="invalid-feedback">
             <%= error.phone %> 
-          </div>
+         </div>
         </div>
         <div class="form-group" mr-3>
           <input type="email" name="email" placeholder="Email" class="form-control <%= error.email ? 'is-invalid': '' %>" />
@@ -46,7 +46,7 @@
         </div>
         <input type="submit"class="btn btn-primary" value="Submit">  
         </form>
-         
+      </div>
         <div>
           <h4>Your Contacts</h4>
           <table class="table text-white">
@@ -69,7 +69,15 @@
                 <td><%= contact.email %> </td>
 
                 <td>
-                    <button class="btn btn-warning btn-sm">
+                    <button class="btn btn-warning btn-sm edit-btn" 
+                                    
+                  
+                          data-name="<%= contact.name %>"
+                           data-phone="<%= contact.phone %>"
+                          data-email="<%= contact.email %>"
+                           data-id="<%= contact._id %>"
+                         
+                    >
                         Edit
                     </button>
                     <a href="/contacts/delete/<%= contact._id %>"
@@ -106,5 +114,27 @@
       integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
       crossorigin="anonymous"
     ></script>
+
+    <script>
+       
+       window.onload = function(){
+         let editBtns = document.getElementsByClassName('edit-btn')
+         let form = document.getElementById('my-form')
+
+         ;[...editBtns].forEach(btn =>{
+
+           btn.addEventListener('click',function(e){
+              let{name,phone,email,id} =e.target.dataset
+             form[0].value = name
+             form[1].value = phone
+             form[2].value = email
+             form[3].value = id
+             form[4].value = 'Update'
+           })
+         })
+       }
+        
+   
+    </script>
   </body>
 </html>
